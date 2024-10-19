@@ -87,7 +87,34 @@ def collider_input(key):
 
 
 def girar(key):
-    if key == 'u':
+    print(key)
+    if held_keys['alt'] and key == 'u':
+        rotate_side('Rw',1)
+    elif held_keys['alt'] and key == 'i':
+        rotate_side('Lw',1)
+    elif held_keys['alt'] and key == 'o':
+        rotate_side('Uw',1)
+    elif held_keys['alt'] and key == 'j':
+        rotate_side('Dw',1)
+    elif held_keys['alt'] and key == 'k':
+        rotate_side('Bw',1)
+    elif held_keys['alt'] and key == 'l':
+        rotate_side('Fw',1)
+
+    elif held_keys['alt'] and key == 'e':
+        rotate_side('Rw',-1)
+    elif held_keys['alt'] and key == 'w':
+        rotate_side('Lw',-1)
+    elif held_keys['alt'] and key == 'q':
+        rotate_side('Uw',-1)
+    elif held_keys['alt'] and key == 'd':
+        rotate_side('Dw',-1)
+    elif held_keys['alt'] and key == 's':
+        rotate_side('Bw',-1)
+    elif held_keys['alt'] and key == 'a':
+        rotate_side('Fw',-1)    
+
+    elif key == 'u':
         rotate_side(Vec3(1,0,0),1)
     elif key == 'i':
         rotate_side(Vec3(-1,0,0),1)
@@ -113,6 +140,21 @@ def girar(key):
     elif key == 'a':
         rotate_side(Vec3(0,0,-1),-1)
 
+    elif key == 'r':
+        rotate_side('M',1)
+    elif key == 't':
+        rotate_side('S',1)
+    elif key == 'y':
+        rotate_side('E',1)
+
+    elif key == 'f':
+        rotate_side('M',-1)
+    elif key == 'g':
+        rotate_side('S',-1)
+    elif key == 'h':
+        rotate_side('E',-1)
+ 
+
 def input(key):
     if animation_in_progress is not True:
         girar(key)
@@ -133,20 +175,48 @@ def rotate_side(normal, direction=1, speed=0.5):
     elif normal == Vec3(-1,0,0):
         [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.x < 0]
         rotation_helper.animate('rotation_x', -90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
-
     elif normal == Vec3(0,1,0):
         [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.y > 0]
         rotation_helper.animate('rotation_y', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
     elif normal == Vec3(0,-1,0):
         [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.y < 0]
         rotation_helper.animate('rotation_y', -90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
-
     elif normal == Vec3(0,0,1):
         [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.z > 0]
         rotation_helper.animate('rotation_z', -90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
     elif normal == Vec3(0,0,-1):
         [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.z < 0]
         rotation_helper.animate('rotation_z', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+    
+    if normal == 'Rw':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.x >= 0]
+        rotation_helper.animate('rotation_x', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+    elif normal == 'Lw':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.x <= 0]
+        rotation_helper.animate('rotation_x', -90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+    elif normal == 'Uw':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.y >= 0]
+        rotation_helper.animate('rotation_y', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+    elif normal == 'Dw':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.y <= 0]
+        rotation_helper.animate('rotation_y', -90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+    elif normal == 'Bw':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.z >= 0]
+        rotation_helper.animate('rotation_z', -90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+    elif normal == 'Fw':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.z <= 0]
+        rotation_helper.animate('rotation_z', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+
+
+    elif normal == 'M':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.x == 0]
+        rotation_helper.animate('rotation_x', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+    elif normal == 'S':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.z == 0]
+        rotation_helper.animate('rotation_z', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+    elif normal == 'E':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.y == 0]
+        rotation_helper.animate('rotation_y', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
 
 
     invoke(reset_rotation_helper, delay=.2*speed)
