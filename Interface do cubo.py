@@ -11,29 +11,65 @@ cube_colors = [
     color.red,    # back
     color.orange,    # front
 ]
-
-# make a model with a separate color on each face
-combine_parent = Entity(enabled=False)
-for i in range(3):
-    dir = Vec3(0,0,0)
-    dir[i] = 1
-    print(dir)
-    e = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[i*2])
-    e.look_at(dir, 'up')
-
-    e_flipped = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[(i*2)+1])
-    e_flipped.look_at(-dir, 'up')
-
-combine_parent.combine()
-
-
-# place 3x3x3 cubes
 cubes = []
-for x in range(3):
-    for y in range(3):
-        for z in range(3):
-            e = Entity(model=copy(combine_parent.model), position=Vec3(x,y,z) - (Vec3(3,3,3)/3), texture='white_cube')
-            cubes.append(e)
+
+# Definir as cores
+cube_colors = [
+    color.blue,    # face direita
+    color.green,   # face esquerda
+    color.yellow,  # face superior
+    color.white,   # face inferior
+    color.red,     # face traseira
+    color.orange   # face frontal
+]
+
+def criar_cubos():
+    for x in range(-1, 2):
+        for y in range(-1, 2):
+            for z in range(-1, 2):
+                # Criar um modelo com cores separadas para cada face
+                combine_parent = Entity(enabled=False)
+
+                for i in range(3):  # Iterar sobre os eixos X, Y e Z
+                    dir = Vec3(0, 0, 0)
+                    dir[i] = 1
+
+                    # Face direita (x == 1) -> Azul
+                    if x == 1 and i == 0:  # i == 0 se refere ao eixo X
+                        e = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[0])
+                        e.look_at(dir, 'up')
+                    # Face esquerda (x == -1) -> Verde
+                    elif x == -1 and i == 0:
+                        e_flipped = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[1])
+                        e_flipped.look_at(-dir, 'up')
+
+                    # Face superior (y == 1) -> Amarelo
+                    elif y == 1 and i == 1:  # i == 1 se refere ao eixo Y
+                        e = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[2])
+                        e.look_at(dir, 'up')
+                    # Face inferior (y == -1) -> Branco
+                    elif y == -1 and i == 1:
+                        e_flipped = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[3])
+                        e_flipped.look_at(-dir, 'up')
+
+                    # Face traseira (z == 1) -> Vermelho
+                    elif z == 1 and i == 2:  # i == 2 se refere ao eixo Z
+                        e = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[4])
+                        e.look_at(dir, 'up')
+                    # Face frontal (z == -1) -> Laranja
+                    elif z == -1 and i == 2:
+                        e_flipped = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[5])
+                        e_flipped.look_at(-dir, 'up')
+
+                # Agora que todas as faces foram definidas, combinar o modelo
+                combine_parent.combine()
+
+                # Criar a entidade final do cubo e adicionar à lista de cubos
+                e = Entity(model=copy(combine_parent.model), position=Vec3(x*1.1, y*1.1, z*1.1), texture='white_cube')
+                cubes.append(e)
+
+criar_cubos()
+
 
 
 # rotate a side when we click on it
