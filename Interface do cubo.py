@@ -17,7 +17,7 @@ combine_parent = Entity(enabled=False)
 for i in range(3):
     dir = Vec3(0,0,0)
     dir[i] = 1
-
+    print(dir)
     e = Entity(parent=combine_parent, model='plane', origin_y=-.5, texture='white_cube', color=cube_colors[i*2])
     e.look_at(dir, 'up')
 
