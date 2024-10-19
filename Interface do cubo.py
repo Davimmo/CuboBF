@@ -1,3 +1,4 @@
+import time
 from ursina import *
 
 
@@ -86,17 +87,17 @@ def collider_input(key):
 
 
 def girar(key):
-    if key == 'i':
+    if key == 'u':
         rotate_side(Vec3(1,0,0),1)
-    elif key == 'o':
+    elif key == 'i':
         rotate_side(Vec3(-1,0,0),1)
-    elif key == 'p':
+    elif key == 'o':
         rotate_side(Vec3(0,1,0),1)
-    elif key == 'k':
+    elif key == 'j':
         rotate_side(Vec3(0,-1,0),1)
-    elif key == 'l':
+    elif key == 'k':
         rotate_side(Vec3(0,0,1),1)
-    elif key == 'ç':
+    elif key == 'l':
         rotate_side(Vec3(0,0,-1),1)
 
     elif key == 'e':
@@ -112,6 +113,10 @@ def girar(key):
     elif key == 'a':
         rotate_side(Vec3(0,0,-1),-1)
 
+def input(key):
+    if animation_in_progress is not True:
+        girar(key)
+
     
 
 collider.input = collider_input
@@ -120,7 +125,8 @@ collider.input = collider_input
 rotation_helper = Entity()
 
 
-def rotate_side(normal, direction=1, speed=5):
+def rotate_side(normal, direction=1, speed=0.5):
+    global animation_in_progress
     if normal == Vec3(1,0,0):
         [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.x > 0]
         rotation_helper.animate('rotation_x', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
@@ -145,11 +151,16 @@ def rotate_side(normal, direction=1, speed=5):
 
     invoke(reset_rotation_helper, delay=.2*speed)
 
-    if speed:
+    if speed or animation_in_progress:
         collider.ignore_input = True
+        animation_in_progress =True
+        
+
         @after(.25*speed)
         def _():
             collider.ignore_input = False
+            global animation_in_progress
+            animation_in_progress=False
             check_for_win()
 
 
