@@ -12,6 +12,7 @@ cube_colors = [
     color.orange,    # front
 ]
 cubes = []
+animation_in_progress=False
 
 # Definir as cores
 cube_colors = [
@@ -22,6 +23,7 @@ cube_colors = [
     color.red,     # face traseira
     color.orange   # face frontal
 ]
+
 
 def criar_cubos():
     for x in range(-1, 2):
@@ -82,13 +84,43 @@ def collider_input(key):
         elif key == 'right mouse down':
             rotate_side(mouse.normal, -1)
 
+
+def girar(key):
+    if key == 'i':
+        rotate_side(Vec3(1,0,0),1)
+    elif key == 'o':
+        rotate_side(Vec3(-1,0,0),1)
+    elif key == 'p':
+        rotate_side(Vec3(0,1,0),1)
+    elif key == 'k':
+        rotate_side(Vec3(0,-1,0),1)
+    elif key == 'l':
+        rotate_side(Vec3(0,0,1),1)
+    elif key == 'ç':
+        rotate_side(Vec3(0,0,-1),1)
+
+    elif key == 'e':
+        rotate_side(Vec3(1,0,0),-1)
+    elif key == 'w':
+        rotate_side(Vec3(-1,0,0),-1)
+    elif key == 'q':
+        rotate_side(Vec3(0,1,0),-1)
+    elif key == 'd':
+        rotate_side(Vec3(0,-1,0),-1)
+    elif key == 's':
+        rotate_side(Vec3(0,0,1),-1)
+    elif key == 'a':
+        rotate_side(Vec3(0,0,-1),-1)
+
+    
+
 collider.input = collider_input
 
 
 rotation_helper = Entity()
 
 
-def rotate_side(normal, direction=1, speed=1):
+def rotate_side(normal, direction=1, speed=5):
     if normal == Vec3(1,0,0):
         [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.x > 0]
         rotation_helper.animate('rotation_x', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
@@ -121,6 +153,8 @@ def rotate_side(normal, direction=1, speed=1):
             check_for_win()
 
 
+
+
 def reset_rotation_helper():
     [setattr(e, 'world_parent', scene) for e in cubes]
     rotation_helper.rotation = (0,0,0)
@@ -146,5 +180,7 @@ randomize_button.fit_to_text()
 
 window.color = color._16
 EditorCamera()
+
+
 
 app.run()
