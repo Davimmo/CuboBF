@@ -1,4 +1,5 @@
 from ursina import *
+import queue
 
 
 app = Ursina()
@@ -13,7 +14,7 @@ cube_colors = [
 ]
 cubes = []
 animation_in_progress=False
-fila_de_comandos=[]
+fila_de_comandos=queue.Queue()
 
 # Definir as cores
 cube_colors = [
@@ -99,6 +100,19 @@ def girar(key):
         rotate_side('Bw',1)
     elif held_keys['alt'] and key == 'l':
         rotate_side('Fw',1)
+    
+    elif held_keys['alt'] and key == 'r':
+        rotate_side('X',1)
+    elif held_keys['alt'] and key == 't':
+        rotate_side('Y',1)
+    elif held_keys['alt'] and key == 'y':
+        rotate_side('Z',1)
+    elif held_keys['alt'] and key == 'f':
+        rotate_side('X',-1)
+    elif held_keys['alt'] and key == 'g':
+        rotate_side('Y',-1)
+    elif held_keys['alt'] and key == 'h':
+        rotate_side('Z',-1)
 
     elif held_keys['alt'] and key == 'e':
         rotate_side('Rw',-1)
@@ -166,7 +180,7 @@ collider.input = collider_input
 rotation_helper = Entity()
 
 
-def rotate_side(normal, direction=1, speed=0.5):
+def rotate_side(normal, direction=1, speed=0.7):
     global animation_in_progress
     if normal == Vec3(1,0,0):
         [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.x > 0]
@@ -216,6 +230,20 @@ def rotate_side(normal, direction=1, speed=0.5):
     elif normal == 'E':
         [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.y == 0]
         rotation_helper.animate('rotation_y', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+    
+    elif normal=='X':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes]
+        rotation_helper.animate('rotation_x', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+
+    elif normal=='Y':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes]
+        rotation_helper.animate('rotation_y', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+    
+    elif normal=='Z':
+        [setattr(e, 'world_parent', rotation_helper) for e in cubes]
+        rotation_helper.animate('rotation_z', 90 * direction, duration=.15*speed, curve=curve.linear, interrupt='finish')
+
+
 
 
     invoke(reset_rotation_helper, delay=.2*speed)
@@ -266,14 +294,14 @@ def executar_comandos_interface(string_comando=None):
         "R'":(Vec3(1,0,0),-1),
         "L":(Vec3(-1,0,0),1),
         "L'":(Vec3(-1,0,0),-1),
-        "F":(Vec3(0,1,1),1),
-        "F'":(Vec3(0,1,-1),-1),
-        "B":(Vec3(0,-1,0),1),
-        "B'":(Vec3(0,-1,0),-1),
-        "U":(Vec3(0,0,1),1),
-        "U'":(Vec3(0,0,1),-1),
-        "D":(Vec3(0,0,-1),1),
-        "D'":(Vec3(-1,0,-1),-1),
+        "F":(Vec3(0,0,-1),1),
+        "F'":(Vec3(0,0,-1),-1),
+        "B":(Vec3(0,0,1),1),
+        "B'":(Vec3(0,0,1),-1),
+        "U":(Vec3(0,1,0),1),
+        "U'":(Vec3(0,1,0),-1),
+        "D":(Vec3(0,-1,0),1),
+        "D'":(Vec3(0,-1,0),-1),
 
         "M":('M',1),
         "M'":('M',1),
@@ -285,7 +313,7 @@ def executar_comandos_interface(string_comando=None):
         "R2":(Vec3(1,0,0),1),
         "L2":(Vec3(-1,0,0),1),
         "U2":(Vec3(0,1,0),1),
-        "D2":(Vec3(0,1,0),1),
+        "D2":(Vec3(0,-1,0),1),
         "B2":(Vec3(0,0,1),1),
         "F2":(Vec3(0,0,-1),1),
 
@@ -311,7 +339,15 @@ def executar_comandos_interface(string_comando=None):
         "FW2":('Fw',1),
         "BW2":('Bw',1),
         "UW2":('Uw',1),
-        "DW2":('Dw',1)
+        "DW2":('Dw',1),
+
+        "X":('X',1),
+        "X'":('X',-1),
+        "Y":('Y',1),
+        "Y'":('Y',-1),
+        "Z":('Z',1),
+        "Z'":('Z',-1)
+        
         }
 
     if string_comando is not None:
@@ -320,10 +356,10 @@ def executar_comandos_interface(string_comando=None):
         print(" ".join(lista_comandos))
         for comando in lista_comandos:
             if str(comando).__contains__('2'):
-                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
-                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
+                fila_de_comandos.put([comandos_dict[comando][0],comandos_dict[comando][1]])
+                fila_de_comandos.put([comandos_dict[comando][0],comandos_dict[comando][1]])
             else:
-                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
+                fila_de_comandos.put([comandos_dict[comando][0],comandos_dict[comando][1]])
 
     else:
         string_comando=input("Digite os movimentos separados por espaços")
@@ -332,19 +368,31 @@ def executar_comandos_interface(string_comando=None):
         print(" ".join(lista_comandos))
         for comando in lista_comandos:
             if str(comando).__contains__('2'):
-                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
-                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
+                fila_de_comandos.put([comandos_dict[comando][0],comandos_dict[comando][1]])
+                fila_de_comandos.put([comandos_dict[comando][0],comandos_dict[comando][1]])
             else:
-                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
+                fila_de_comandos.put([comandos_dict[comando][0],comandos_dict[comando][1]])
 
 
 def update():
     global fila_de_comandos
-    if not animation_in_progress and len(fila_de_comandos)!=0:
-        comando=fila_de_comandos.pop()
+    if (not animation_in_progress) and (not fila_de_comandos.empty()):
+        comando=fila_de_comandos.get()
         rotate_side(comando[0],comando[1])
 
-invoke(executar_comandos_interface, "L' D' R2 B2 R2 D' R2 B2 R' D' B D U' R' F2 L RW' UW'", delay=5)
+invoke(executar_comandos_interface, "L' D' R2 B2 R2 D' R2 B2 R' D' B D U' R' F2 L RW' UW'", delay=3)
+invoke(executar_comandos_interface,'''
+X Z' D' LW D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D' LW' D
+LW' D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D' LW
+DW' L' R U R' U' R' F R2 U' R' U' R U R' F' L DW
+L' R U R' U' R' F R2 U' R' U' R U R' F' L
+LW' D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D LW
+DW L' R U R' U' R' F R2 U' R' U' R U R' F' L DW'
+D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D
+LW D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D LW'
+L2 R U R' U' R' F R2 U' R' U' R U R' F' L2
+L' DW L' R U R' U' R' F R2 U' R' U' R U R' F' L DW' L
+''',delay=15)
 
 
 
