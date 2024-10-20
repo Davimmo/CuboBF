@@ -87,7 +87,6 @@ def collider_input(key):
 
 
 def girar(key):
-    print(key)
     if held_keys['alt'] and key == 'u':
         rotate_side('Rw',1)
     elif held_keys['alt'] and key == 'i':
@@ -380,19 +379,19 @@ def update():
         comando=fila_de_comandos.get()
         rotate_side(comando[0],comando[1])
 
-invoke(executar_comandos_interface, "L' D' R2 B2 R2 D' R2 B2 R' D' B D U' R' F2 L RW' UW'", delay=3)
-invoke(executar_comandos_interface,'''
-X Z' D' LW D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D' LW' D
-LW' D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D' LW
-DW' L' R U R' U' R' F R2 U' R' U' R U R' F' L DW
-L' R U R' U' R' F R2 U' R' U' R U R' F' L
-LW' D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D LW
-DW L' R U R' U' R' F R2 U' R' U' R U R' F' L DW'
-D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D
-LW D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D LW'
-L2 R U R' U' R' F R2 U' R' U' R U R' F' L2
+invoke(executar_comandos_interface, "R2 U2 B2 U2 R2 B2 R B2 F2 R' B2 F L' R D' R' B2 F D' U Rw Uw'", delay=3)
+invoke(executar_comandos_interface,'''X' Z
+DW2 L R U R' U' R' F R2 U' R' U' R U R' F' L' DW2
+D2 L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D2
+LW2 D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D' LW2
+DW2 L' R U R' U' R' F R2 U' R' U' R U R' F' L DW2
+D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D'
 L' DW L' R U R' U' R' F R2 U' R' U' R U R' F' L DW' L
-''',delay=15)
+LW' D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D' LW
+D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D
+L' R U R' U' R' F R2 U' R' U' R U R' F' L
+L DW L' R U R' U' R' F R2 U' R' U' R U R' F' L DW' L'
+''',delay=10)
 
 
 
