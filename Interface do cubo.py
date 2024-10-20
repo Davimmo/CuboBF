@@ -13,6 +13,7 @@ cube_colors = [
 ]
 cubes = []
 animation_in_progress=False
+fila_de_comandos=[]
 
 # Definir as cores
 cube_colors = [
@@ -23,7 +24,6 @@ cube_colors = [
     color.red,     # face traseira
     color.orange   # face frontal
 ]
-
 
 def criar_cubos():
     for x in range(-1, 2):
@@ -158,7 +158,7 @@ def input(key):
     if animation_in_progress is not True:
         girar(key)
 
-    
+
 
 collider.input = collider_input
 
@@ -259,6 +259,95 @@ randomize_button = Button(text='randomize', color=color.azure, position=(.7,-.4)
 randomize_button.fit_to_text()
 
 window.color = color._16
+def executar_comandos_interface(string_comando=None):
+    global fila_de_comandos
+    comandos_dict={
+        "R":(Vec3(1,0,0),1),
+        "R'":(Vec3(1,0,0),-1),
+        "L":(Vec3(-1,0,0),1),
+        "L'":(Vec3(-1,0,0),-1),
+        "F":(Vec3(0,1,1),1),
+        "F'":(Vec3(0,1,-1),-1),
+        "B":(Vec3(0,-1,0),1),
+        "B'":(Vec3(0,-1,0),-1),
+        "U":(Vec3(0,0,1),1),
+        "U'":(Vec3(0,0,1),-1),
+        "D":(Vec3(0,0,-1),1),
+        "D'":(Vec3(-1,0,-1),-1),
+
+        "M":('M',1),
+        "M'":('M',1),
+        "S":('S',1),
+        "S'":('S',-1),
+        "E":('E',-1),
+        "E'":('E',-1),
+
+        "R2":(Vec3(1,0,0),1),
+        "L2":(Vec3(-1,0,0),1),
+        "U2":(Vec3(0,1,0),1),
+        "D2":(Vec3(0,1,0),1),
+        "B2":(Vec3(0,0,1),1),
+        "F2":(Vec3(0,0,-1),1),
+
+        "M2":('M',1),
+        "S2":('S',1),
+        "E2":('S',1),
+
+        "RW":('Rw',1),
+        "RW'":('Rw',-1),
+        "LW":('Lw',1),
+        "LW'":('Lw',-1),
+        "FW":('Fw',1),
+        "FW'":('Fw',-1),
+        "BW":('Bw',1),
+        "BW'":('Bw',-1),
+        "UW":('Uw',1),
+        "UW'":('Uw',-1),
+        "DW":('Dw',1),
+        "DW'":('Dw',-1),
+
+        "RW2":('Rw',1),
+        "LW2":('Lw',1),
+        "FW2":('Fw',1),
+        "BW2":('Bw',1),
+        "UW2":('Uw',1),
+        "DW2":('Dw',1)
+        }
+
+    if string_comando is not None:
+        string_comando=string_comando.upper()
+        lista_comandos=string_comando.split()
+        print(" ".join(lista_comandos))
+        for comando in lista_comandos:
+            if str(comando).__contains__('2'):
+                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
+                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
+            else:
+                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
+
+    else:
+        string_comando=input("Digite os movimentos separados por espaços")
+        string_comando=string_comando.upper()
+        lista_comandos=string_comando.split()
+        print(" ".join(lista_comandos))
+        for comando in lista_comandos:
+            if str(comando).__contains__('2'):
+                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
+                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
+            else:
+                fila_de_comandos.append([comandos_dict[comando][0],comandos_dict[comando][1]])
+
+
+def update():
+    global fila_de_comandos
+    if not animation_in_progress and len(fila_de_comandos)!=0:
+        comando=fila_de_comandos.pop()
+        rotate_side(comando[0],comando[1])
+
+invoke(executar_comandos_interface, "L' D' R2 B2 R2 D' R2 B2 R' D' B D U' R' F2 L RW' UW'", delay=5)
+
+
+
 EditorCamera()
 
 
