@@ -1,4 +1,5 @@
 import numpy as np
+import kociemba
 
 rotate_x=np.array([
     [1, 0, 0],
@@ -447,7 +448,101 @@ class Cubo:
         nova_string=" ".join(nova_string)
         
         return nova_string
-    
+
+    def resolver_kociemba(self):
+        coresdic={
+        'amarelo':'U',
+        'azul':'R',
+        'laranja':'F',
+        'verde':'L',
+        'vermelho':'B',
+        'branco':'D'
+        }
+
+        ordem_kociemba=[
+        #TOPO ou U
+        [-1,1,1],
+        [0,1,1],
+        [1,1,1],
+        [-1,0,1],
+        [0,0,1],
+        [1,0,1],
+        [-1,-1,1],
+        [0,-1,1],
+        [1,-1,1],
+        #DIREITA ou R
+        [1,-1,1],
+        [1,0,1],
+        [1,1,1],
+        [1,-1,0],
+        [1,0,0],
+        [1,1,0],
+        [1,-1,-1],
+        [1,0,-1],
+        [1,1,-1],
+        #FRENTE ou F
+        [-1,-1,1],
+        [0,-1,1],
+        [1,-1,1],
+        [-1,-1,0],
+        [0,-1,0],
+        [1,-1,0],
+        [-1,-1,-1],
+        [0,-1,-1],
+        [1,-1,-1],
+        #BAIXO ou D
+        [-1,-1,-1],
+        [0,-1,-1],
+        [1,-1,-1],
+        [-1,0,-1],
+        [0,0,-1],
+        [1,1,-1],
+        [-1,1,-1],
+        [0,1,-1],
+        [1,1,-1],
+        #ESQUERDA ou L
+        [-1,1,1],
+        [-1,0,1],
+        [-1,-1,1],
+        [-1,1,0],
+        [-1,0,0],
+        [-1,-1,0],
+        [-1,1,-1],
+        [-1,0,-1],
+        [-1,-1,-1],
+        #TRASEIRA ou B
+        [1,1,1],
+        [0,1,1],
+        [-1,1,1],
+        [1,1,0],
+        [0,1,0],
+        [-1,1,0],
+        [1,1,-1],
+        [0,1,-1],
+        [-1,1,-1],
+        ]
+
+        string_kociemba=[]
+        coordenada_adesivos={tuple(x.coordenada):x.adesivos for x in self.lista_de_cubinhos}
+        for i,coordenada in list(enumerate(ordem_kociemba)):
+            adesivos=coordenada_adesivos[tuple(coordenada)]
+            for k,v in dict(adesivos).items():
+                if i<=8 and v[2]==1:
+                    string_kociemba.append(coresdic[k])
+                if (i>8 and i<=17) and v[0]==1:
+                    string_kociemba.append(coresdic[k])
+                if i>17 and i<=26 and v[1]==-1:
+                    string_kociemba.append(coresdic[k])
+                if i>26 and i<=35 and v[2]==-1:
+                    string_kociemba.append(coresdic[k])
+                if i>35 and i <=44 and v[0]==-1:
+                    string_kociemba.append(coresdic[k])
+                if i>44 and v[1]==1:
+                    string_kociemba.append(coresdic[k])
+
+        string_kociemba="".join(string_kociemba)
+        return kociemba.solve(string_kociemba)
+        
 class Bf:
     def __init__(self):
         self.cubo=Cubo()
@@ -565,13 +660,11 @@ class Bf:
             print(" ".join(lista_comandos))
             for comando in lista_comandos:
                 comandos_dict[comando]()
+    
+        
+
 
 bf=Bf()
-bf.cubo.executar_comandos("L' D' R2 B2 R2 D' R2 B2 R' D' B D U' R' F2 L Rw' Uw'")
+bf.executar_comandos('A C D E')
+print(f'Kobiemba: {bf.cubo.resolver_kociemba()}')
 
-
-print(bf.cubo.esta_resolvido())
-
-bf.executar_comandos("J V C T W E Q U L G")
-
-print(bf.cubo.esta_resolvido())

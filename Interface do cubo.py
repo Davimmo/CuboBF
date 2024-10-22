@@ -379,19 +379,14 @@ def update():
         comando=fila_de_comandos.get()
         rotate_side(comando[0],comando[1])
 
-invoke(executar_comandos_interface, "R2 U2 B2 U2 R2 B2 R B2 F2 R' B2 F L' R D' R' B2 F D' U Rw Uw'", delay=3)
-invoke(executar_comandos_interface,'''X' Z
-DW2 L R U R' U' R' F R2 U' R' U' R U R' F' L' DW2
-D2 L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D2
+invoke(executar_comandos_interface, '''
+LW2 D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D LW2
 LW2 D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D' LW2
-DW2 L' R U R' U' R' F R2 U' R' U' R U R' F' L DW2
-D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D'
-L' DW L' R U R' U' R' F R2 U' R' U' R U R' F' L DW' L
-LW' D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D' LW
-D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D
-L' R U R' U' R' F R2 U' R' U' R U R' F' L
-L DW L' R U R' U' R' F R2 U' R' U' R U R' F' L DW' L'
-''',delay=10)
+R U R' U' R' F R2 U' R' U' R U R' F'
+L' DW L' R U R' U' R' F R2 U' R' U' R U R' F' L DW' L       
+'''.replace("’","'"), delay=3)
+invoke(executar_comandos_interface,"R U' D B U2 B' U D' R U2 R2 U F2 R2 F2 U F2 R2 F2",delay=20)
+
 
 
 
