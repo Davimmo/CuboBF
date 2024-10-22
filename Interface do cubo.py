@@ -379,13 +379,8 @@ def update():
         comando=fila_de_comandos.get()
         rotate_side(comando[0],comando[1])
 
-invoke(executar_comandos_interface, '''
-LW2 D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D LW2
-LW2 D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D' LW2
-R U R' U' R' F R2 U' R' U' R U R' F'
-L' DW L' R U R' U' R' F R2 U' R' U' R U R' F' L DW' L       
-'''.replace("’","'"), delay=3)
-invoke(executar_comandos_interface,"R U' D B U2 B' U D' R U2 R2 U F2 R2 F2 U F2 R2 F2",delay=20)
+  
+invoke(executar_comandos_interface,"Y' Z' Z' B2 L' R2 F2 L2 R U2 R' D2 R B' F2 R2 B L B F' U' B U' D F R2 F' B'",delay=3)
 
 
 

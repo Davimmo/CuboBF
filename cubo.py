@@ -14,8 +14,8 @@ rotate_y=np.array([
 ])
 
 rotate_z=np.array([
-    [0, -1, 0],
-    [1, 0, 0],
+    [0, 1, 0],
+    [-1, 0, 0],
     [0, 0, 1]
 ])
 
@@ -118,7 +118,7 @@ class Cubo:
             cubinho.coordenada = np.dot(cubinho.coordenada, matriz)
             
             # Atualiza os adesivos do cubinho
-            for k in list(cubinho.adesivos.keys()):  # Use list() para evitar modificações durante a iteração
+            for k in cubinho.adesivos:  # Use list() para evitar modificações durante a iteração
                 cubinho.adesivos[k] = np.dot(cubinho.adesivos[k], matriz)
 
 
@@ -445,21 +445,33 @@ class Cubo:
         }
         for letra in sequência:
             nova_string.append(correspondência[letra])
-        nova_string=" ".join(nova_string)
+            nova_string=" ".join(nova_string)
         
         return nova_string
 
-    def resolver_kociemba(self):
-        coresdic={
-        'amarelo':'U',
-        'azul':'R',
-        'laranja':'F',
-        'verde':'L',
-        'vermelho':'B',
-        'branco':'D'
+    def encontrar_cor_na_direcao(self,lista, coordenada_procurada, direcao):
+        # Percorre todos os cubinhos na lista
+        for cubinho in lista:
+            # Verifica se a coordenada do cubinho é a coordenada procurada
+            if np.array_equal(cubinho.coordenada, np.array(coordenada_procurada)):
+                # Percorre os adesivos (cores) do cubinho
+                for cor, direcao_adesivo in cubinho.adesivos.items():
+                    # Verifica se a direção do adesivo é a direção procurada
+                    if np.array_equal(direcao_adesivo, direcao):
+                        return cor  # Retorna a cor que está nessa direção
+        return None  # Retorna None se não encontrar nenhum cubinho na coordenada ou sem cor na direção
+    
+    def string_kociemba(self):
+        dicionario_cores={
+            'amarelo':'U',
+            'azul':'R',
+            'laranja':'F',
+            'branco':'D',
+            'verde':'L',
+            'vermelho':'B'
         }
-
-        ordem_kociemba=[
+        cubo_string=''
+        ordem_kociemba_U=[
         #TOPO ou U
         [-1,1,1],
         [0,1,1],
@@ -469,7 +481,9 @@ class Cubo:
         [1,0,1],
         [-1,-1,1],
         [0,-1,1],
-        [1,-1,1],
+        [1,-1,1]
+        ]
+        ordem_kociemba_R=[
         #DIREITA ou R
         [1,-1,1],
         [1,0,1],
@@ -479,7 +493,9 @@ class Cubo:
         [1,1,0],
         [1,-1,-1],
         [1,0,-1],
-        [1,1,-1],
+        [1,1,-1]
+        ]
+        ordem_kociemba_F=[
         #FRENTE ou F
         [-1,-1,1],
         [0,-1,1],
@@ -489,7 +505,9 @@ class Cubo:
         [1,-1,0],
         [-1,-1,-1],
         [0,-1,-1],
-        [1,-1,-1],
+        [1,-1,-1]
+        ]
+        ordem_kociemba_D=[
         #BAIXO ou D
         [-1,-1,-1],
         [0,-1,-1],
@@ -499,7 +517,9 @@ class Cubo:
         [1,1,-1],
         [-1,1,-1],
         [0,1,-1],
-        [1,1,-1],
+        [1,1,-1]
+        ]
+        ordem_kociemba_L=[
         #ESQUERDA ou L
         [-1,1,1],
         [-1,0,1],
@@ -509,8 +529,10 @@ class Cubo:
         [-1,-1,0],
         [-1,1,-1],
         [-1,0,-1],
-        [-1,-1,-1],
+        [-1,-1,-1]
+        ]
         #TRASEIRA ou B
+        ordem_kociemba_B=[
         [1,1,1],
         [0,1,1],
         [-1,1,1],
@@ -519,30 +541,42 @@ class Cubo:
         [-1,1,0],
         [1,1,-1],
         [0,1,-1],
-        [-1,1,-1],
+        [-1,1,-1]
         ]
 
-        string_kociemba=[]
-        coordenada_adesivos={tuple(x.coordenada):x.adesivos for x in self.lista_de_cubinhos}
-        for i,coordenada in list(enumerate(ordem_kociemba)):
-            adesivos=coordenada_adesivos[tuple(coordenada)]
-            for k,v in dict(adesivos).items():
-                if i<=8 and v[2]==1:
-                    string_kociemba.append(coresdic[k])
-                if (i>8 and i<=17) and v[0]==1:
-                    string_kociemba.append(coresdic[k])
-                if i>17 and i<=26 and v[1]==-1:
-                    string_kociemba.append(coresdic[k])
-                if i>26 and i<=35 and v[2]==-1:
-                    string_kociemba.append(coresdic[k])
-                if i>35 and i <=44 and v[0]==-1:
-                    string_kociemba.append(coresdic[k])
-                if i>44 and v[1]==1:
-                    string_kociemba.append(coresdic[k])
+        for coordenada in ordem_kociemba_U:
+            cor=self.encontrar_cor_na_direcao(self.ladoU,coordenada,np.array([0,0,1]))
+            cubo_string+=dicionario_cores[cor]
 
-        string_kociemba="".join(string_kociemba)
-        print(len(string_kociemba))
-        return kociemba.solve(string_kociemba)
+        for coordenada in ordem_kociemba_R:
+            cor=self.encontrar_cor_na_direcao(self.ladoR,coordenada,np.array([1,0,0]))
+            cubo_string+=dicionario_cores[cor]
+
+        for coordenada in ordem_kociemba_F:
+            cor=self.encontrar_cor_na_direcao(self.ladoF,coordenada,np.array([0,-1,0]))
+            cubo_string+=dicionario_cores[cor]
+
+        for coordenada in ordem_kociemba_D:
+            cor=self.encontrar_cor_na_direcao(self.ladoD,coordenada,np.array([0,0,-1]))
+            cubo_string+=dicionario_cores[cor]
+
+        for coordenada in ordem_kociemba_L:
+            cor=self.encontrar_cor_na_direcao(self.ladoL,coordenada,np.array([-1,0,0]))
+            cubo_string+=dicionario_cores[cor]
+
+        for coordenada in ordem_kociemba_B:
+            cor=self.encontrar_cor_na_direcao(self.ladoB,coordenada,np.array([0,1,0]))
+            cubo_string+=dicionario_cores[cor]
+        
+        print(cubo_string)
+        resultado=kociemba.solve(cubo_string)
+        return resultado
+
+
+            
+
+
+
         
 class Bf:
     def __init__(self):
@@ -662,10 +696,7 @@ class Bf:
             for comando in lista_comandos:
                 comandos_dict[comando]()
     
-        
-
-
+#U R F D L B
 c1=Cubo()
-c1.executar_comandos("F L' F U2 D2 R' D B2 F D L2 F' U' R B' L' F L2 D' U' L' D' B2 D2 B")
-print(f'Kobiemba: {c1.resolver_kociemba()}')
-
+c1.show(c1.ladoB)
+print(c1.string_kociemba())
