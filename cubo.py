@@ -230,7 +230,7 @@ class Cubo:
         self.rotate(self.ladoLw,rotate_x)
         self.refresh()
     def Fw(self):
-        self.rotate(self.ladoFw,np.rotate_y)
+        self.rotate(self.ladoFw,rotate_y)
         self.refresh()
     def Fw_(self):
         self.rotate(self.ladoFw,np.transpose(rotate_y))
@@ -541,6 +541,7 @@ class Cubo:
                     string_kociemba.append(coresdic[k])
 
         string_kociemba="".join(string_kociemba)
+        print(len(string_kociemba))
         return kociemba.solve(string_kociemba)
         
 class Bf:
@@ -664,7 +665,7 @@ class Bf:
         
 
 
-bf=Bf()
-bf.executar_comandos('A C D E')
-print(f'Kobiemba: {bf.cubo.resolver_kociemba()}')
+c1=Cubo()
+c1.executar_comandos("F L' F U2 D2 R' D B2 F D L2 F' U' R B' L' F L2 D' U' L' D' B2 D2 B")
+print(f'Kobiemba: {c1.resolver_kociemba()}')
 
