@@ -113,6 +113,10 @@ class Cubo:
         print('-'*100)
 
     def rotate(self, lado, matriz):
+        #Aqui eu descobri a duras penas que mudar a ordem entre a matriz e o vetor faz TOTAL diferença,
+        #por isso prestem MUITA atenção nas aulas de algebra linear galera
+        #No caso eu estou usando as matrizes de rotação trânspostas porque meu vetor é de linha e não coluna
+        
         for cubinho in lado:
             # Atualiza a coordenada do cubinho
             cubinho.coordenada = np.dot(cubinho.coordenada, matriz)
