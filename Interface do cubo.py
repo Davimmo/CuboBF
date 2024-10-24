@@ -380,7 +380,8 @@ def update():
         rotate_side(comando[0],comando[1])
 
   
-invoke(executar_comandos_interface,"Y' Z' Z' B2 L' R2 F2 L2 R U2 R' D2 R B' F2 R2 B L B F' U' B U' D F R2 F' B'",delay=3)
+invoke(executar_comandos_interface,"L F U' F R2 U' L B D R2 U2 L2 U B2 D' F2 R2 B2 D' B2 L",delay=3)
+invoke(executar_comandos_interface,"R2 L2 U2 L2 F' D' B L B R D' B2 U2 D F2 B2 U' L2 U' L2",delay=15)
 
 
 

@@ -14,8 +14,8 @@ rotate_y=np.array([
 ])
 
 rotate_z=np.array([
-    [0, 1, 0],
-    [-1, 0, 0],
+    [0, -1, 0],
+    [1, 0, 0],
     [0, 0, 1]
 ])
 
@@ -164,10 +164,10 @@ class Cubo:
     #Movimentos dos centros
 
     def M(self):
-        self.rotate(self.ladoM,rotate_x)
+        self.rotate(self.ladoM,np.transpose(rotate_x))
         self.refresh()
     def M_(self):
-        self.rotate(self.ladoM,np.transpose(rotate_x))
+        self.rotate(self.ladoM,rotate_x)
         self.refresh()
     def S(self):
         self.rotate(self.ladoS,rotate_y)
@@ -275,26 +275,26 @@ class Cubo:
         self.Dw()
         self.Dw()
 
-    def rotação_completa_X(self):
+    def X(self):
         self.rotate(self.lista_de_cubinhos,rotate_x)
         self.refresh()
 
-    def rotação_completa_X_(self):
+    def X_(self):
         self.rotate(self.lista_de_cubinhos,np.transpose(rotate_x))
         self.refresh()
 
-    def rotação_completa_Y(self):
+    def Y(self):
         self.rotate(self.lista_de_cubinhos,rotate_y)
         self.refresh()
-    def rotação_completa_Y_(self):
+    def Y_(self):
         self.rotate(self.lista_de_cubinhos,np.transpose(rotate_y))
         self.refresh()
 
-    def rotação_completa_Z(self):
-        self.rotate(self.lista_de_cubinhos,np.transpose(rotate_z))
+    def Z(self):
+        self.rotate(self.lista_de_cubinhos,rotate_z)
         self.refresh()
 
-    def rotação_completa_Z_(self):
+    def Z_(self):
         self.rotate(self.lista_de_cubinhos,np.transpose(rotate_z))
         self.refresh()
 
@@ -373,7 +373,15 @@ class Cubo:
             "FW2":self.Fw2,
             "BW2":self.Bw2,
             "UW2":self.Uw2,
-            "DW2":self.Dw2
+            "DW2":self.Dw2,
+
+            "X":self.X,
+            "Y":self.Y,
+            "Z":self.Z,
+
+            "X'":self.X_,
+            "Y'":self.Y_,
+            "Z'":self.Z_
             }
 
         if string_comando is not None:
@@ -442,6 +450,13 @@ class Cubo:
             "BW2":"BW2",
             "UW2":"UW2",
             "DW2":"DW2",
+
+            "X":"X'",
+            "X'":"X",
+            "Y":"Y'",
+            "Y'":"Y",
+            "Z":"Z'",
+            "Z'":"Z"
         }
         for letra in sequência:
             nova_string.append(correspondência[letra])
@@ -470,7 +485,7 @@ class Cubo:
             'verde':'L',
             'vermelho':'B'
         }
-        cubo_string=''
+        cubo_string=""
         ordem_kociemba_U=[
         #TOPO ou U
         [-1,1,1],
@@ -514,7 +529,7 @@ class Cubo:
         [1,-1,-1],
         [-1,0,-1],
         [0,0,-1],
-        [1,1,-1],
+        [1,0,-1],
         [-1,1,-1],
         [0,1,-1],
         [1,1,-1]
@@ -568,14 +583,7 @@ class Cubo:
             cor=self.encontrar_cor_na_direcao(self.ladoB,coordenada,np.array([0,1,0]))
             cubo_string+=dicionario_cores[cor]
         
-        print(cubo_string)
-        resultado=kociemba.solve(cubo_string)
-        return resultado
-
-
-            
-
-
+        return cubo_string
 
         
 class Bf:
@@ -698,5 +706,7 @@ class Bf:
     
 #U R F D L B
 c1=Cubo()
-c1.show(c1.ladoB)
-print(c1.string_kociemba())
+c1.executar_comandos("R")
+a=c1.string_kociemba()
+print(a)
+print(kociemba.solve(a))
