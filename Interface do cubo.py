@@ -372,22 +372,15 @@ def executar_comandos_interface(string_comando=None):
             else:
                 fila_de_comandos.put([comandos_dict[comando][0],comandos_dict[comando][1]])
 
-
 def update():
     global fila_de_comandos
     if (not animation_in_progress) and (not fila_de_comandos.empty()):
         comando=fila_de_comandos.get()
         rotate_side(comando[0],comando[1])
-
   
-invoke(executar_comandos_interface,"L F U' F R2 U' L B D R2 U2 L2 U B2 D' F2 R2 B2 D' B2 L",delay=3)
-invoke(executar_comandos_interface,"R2 L2 U2 L2 F' D' B L B R D' B2 U2 D F2 B2 U' L2 U' L2",delay=15)
-
-
-
+invoke(executar_comandos_interface,"B' L2 U2 B2 R2 D' F2 R2 F2 R2 D' R2 B' D B' U2 B D' F2".replace("’","'"),delay=3)
+invoke(executar_comandos_interface,"U' L U F2 B2 L2 U2 D' R L2 B2 U F2 L2 U2 D' B2 D' B2",delay=15)
 
 EditorCamera()
-
-
 
 app.run()

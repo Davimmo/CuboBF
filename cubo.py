@@ -116,7 +116,7 @@ class Cubo:
         #Aqui eu descobri a duras penas que mudar a ordem entre a matriz e o vetor faz TOTAL diferença,
         #por isso prestem MUITA atenção nas aulas de algebra linear galera
         #No caso eu estou usando as matrizes de rotação trânspostas porque meu vetor é de linha e não coluna
-        
+
         for cubinho in lado:
             # Atualiza a coordenada do cubinho
             cubinho.coordenada = np.dot(cubinho.coordenada, matriz)
@@ -481,6 +481,7 @@ class Cubo:
         return None  # Retorna None se não encontrar nenhum cubinho na coordenada ou sem cor na direção
     
     def string_kociemba(self):
+        #preciso ajustar para caso a orientação seja alterada
         dicionario_cores={
             'amarelo':'U',
             'azul':'R',
@@ -710,7 +711,7 @@ class Bf:
     
 #U R F D L B
 c1=Cubo()
-c1.executar_comandos("R")
+c1.executar_comandos("B’ L2 U2 B2 R2 D’ F2 R2 F2 R2 D’ R2 B’ D B’ U2 B D’ F2".replace("’","'"))
 a=c1.string_kociemba()
 print(a)
 print(kociemba.solve(a))
