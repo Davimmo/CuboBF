@@ -464,9 +464,9 @@ class Cubo:
         }
         for letra in sequência:
             nova_string.append(correspondência[letra])
-            nova_string=" ".join(nova_string)
         
-        return nova_string
+        nova_string=" ".join(nova_string)
+        return str(nova_string)
 
     def encontrar_cor_na_direcao(self,lista, coordenada_procurada, direcao):
         # Percorre todos os cubinhos na lista
@@ -710,8 +710,5 @@ class Bf:
                 comandos_dict[comando]()
     
 #U R F D L B
-c1=Cubo()
-c1.executar_comandos("B’ L2 U2 B2 R2 D’ F2 R2 F2 R2 D’ R2 B’ D B’ U2 B D’ F2".replace("’","'"))
-a=c1.string_kociemba()
-print(a)
-print(kociemba.solve(a))
+c1=Bf()
+c1.executar_comandos('A')
