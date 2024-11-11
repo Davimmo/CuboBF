@@ -711,4 +711,7 @@ class Bf:
     
 #U R F D L B
 c1=Bf()
-c1.executar_comandos('A')
+c1.cubo.executar_comandos("R' F2 D R2 B D2 R' F2 D' L B2 U2 R F2 U2 R B' D' L F' D' L F2 D2 L".replace("’","'"))
+c1.executar_comandos('D L T O H I P F U X A S U')
+print(c1.cubo.meios_corretos())
+

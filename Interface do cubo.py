@@ -179,7 +179,7 @@ collider.input = collider_input
 rotation_helper = Entity()
 
 
-def rotate_side(normal, direction=1, speed=0.7):
+def rotate_side(normal, direction=1, speed=0.5):
     global animation_in_progress
     if normal == Vec3(1,0,0):
         [setattr(e, 'world_parent', rotation_helper) for e in cubes if e.x > 0]
@@ -378,8 +378,22 @@ def update():
         comando=fila_de_comandos.get()
         rotate_side(comando[0],comando[1])
   
-invoke(executar_comandos_interface,"B' L2 U2 B2 R2 D' F2 R2 F2 R2 D' R2 B' D B' U2 B D' F2".replace("’","'"),delay=3)
-invoke(executar_comandos_interface,"U' L U F2 B2 L2 U2 D' R L2 B2 U F2 L2 U2 D' B2 D' B2",delay=15)
+invoke(executar_comandos_interface,"R' F2 D R2 B D2 R' F2 D' L B2 U2 R F2 U2 R B' D' L F' D' L F2 D2 L".replace("’","'"),delay=3)
+invoke(executar_comandos_interface,'''
+R U R' U' R' F R2 U' R' U' R U R' F'
+L' R U R' U' R' F R2 U' R' U' R U R' F' L
+DW2 L' R U R' U' R' F R2 U' R' U' R U R' F' L DW2
+D' LW D L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D' LW' D
+DW L' R U R' U' R' F R2 U' R' U' R U R' F' L DW'
+LW D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D LW'
+DW' L' R U R' U' R' F R2 U' R' U' R U R' F' L DW
+DW' L R U R' U' R' F R2 U' R' U' R U R' F' L' DW
+D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D
+L2 R U R' U' R' F R2 U' R' U' R U R' F' L2
+LW2 D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D LW2
+LW' D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D LW
+D' L2 R U R' U' R' F R2 U' R' U' R U R' F' L2 D
+'''.replace("’","'"),delay=20)
 
 EditorCamera()
 
